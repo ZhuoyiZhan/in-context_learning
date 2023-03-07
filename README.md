@@ -36,7 +36,9 @@ where l(·, ·) is some appropriate loss function, such as the squared error.
 **Parameter: θ includes 12 layers and 8 heads**
 
 **for each layer:**
-**-forward pass: prediction of the model at the position corresponding to xi (that is absolute position 2i − 1) as the prediction of f(xi).**
+**forward pass: prediction of the model at the position corresponding to xi (that is absolute position 2i − 1) as the prediction of f(xi).**
+
+![](decoder.jpeg)
 
 ## Training
 - step 1: at each training step, sampling a batch of prompt
@@ -49,20 +51,15 @@ where l(·, ·) is some appropriate loss function, such as the squared error.
 
 
 ## Critical Ananlysis
-While the paper does not provide any explanation for why transformers exhibit such capabilities, it will spur both empirical and theoretical work studying how transformers learn algorithms from in-context examples
-capability of transformers model to deduce what function the context refers to and execute/compute the value of that function given an input in the context.
+What the article overlooked: 
+While the paper does not provide any explanation for why transformers exhibit such capabilities to compute the value of that function given an input in the context.
+There's a lot of mentioning for 'in-context'. All the model is doing is doing sequential modeling that given a series of inputs and the corresponding function values, the model predicts the function value of the previous input. 
 
-There's a lot of mentioning for 'in-context'. However, I do fear that this could be a bit misleading. All the model is doing is doing sequential modeling that given a series of inputs and the corresponding function values, the model predicts the function value of the previous input. So in a way this can also be seen as sequence modeling.
+What can be developed more:
+More complex function classes than sparse linear functions, two-layer neural networks, and decision trees. More distribution shift
 
-corresponding to predicting on sequences that consist of examples from some tasks. These sequences have more structure and thus this behavior/capability has been studied separately in the literature under the name of "in-context learning"
 
-How is it [the input] presented to the model?
-The Transformer architecture takes as input a sequence of vectors in its embedding space and predicts the next vector in the sequence within the same embedding space (in language modeling these vectors correspond to input tokens). We apply this architecture to our prompt format of
-
-as follows. We map each prompt output
-
-to the same dimension as prompt inputs
-
-by appending zeros, and map the prompt inputs and outputs into the embedding space of the Transformer through a (learnable) linear transformation. We then use another (learnable) linear transformation to map the vector produced by the model to a scalar. Note that the Transformer architecture allows us to compute the prediction for all prompt prefixes in a single forward pass. We will edit our manuscript to clarify any confusion.
 ## other links
-
+- [Transformers learn in-context by gradient descent](https://arxiv.org/pdf/2212.07677.pdf)
+- [Comment on this paper](https://openreview.net/forum?id=flNZJ2eOet)
+- [Transformers generalize differently from information stored in context vs weights](https://arxiv.org/pdf/2210.05675.pdf)
