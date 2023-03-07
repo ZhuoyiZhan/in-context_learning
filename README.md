@@ -9,6 +9,8 @@ Approach: Empirical Approach, train transformers from scratch and compare to the
 In-context learning refers to the ability of a model to condition on a prompt sequence consisting of in-context examples (input-output pairs corresponding to some task) along with a new query input, and generate the corresponding output (without the need to perform any parameter updates after the model is trained).
 Here a model in-context learn a function class F, for “most” functions f ∈ F, and approximate f(xquery) by conditioning on a prompt sequence (x1, f(x1),..., xi, f(xi), xquery) containing in-context examples and the query input.
 
+![](setting.jpg)
+
 Let Dx be a distribution over inputs in 20 dimensions, e.g. linear functions: isotropic Gaussian distribution N(0, Id),
 and DF be a distribution over functions in F, e.g. linear functions:the distribution over linear functions with weight vectors drawn from an isotropic Gaussian (N(0, Id), setting f(x) = w⊤x.
 Inputs xi and xquery, f are drawn i.i.d from their distributions over Dx and DF.
@@ -18,7 +20,7 @@ to (DF , DX ), if it can predict f (xquery) with an average error
 ![](decoder.png)
 where l(·, ·) is some appropriate loss function, such as the squared error.
 
-![](setting.jpg)
+
 
 ### Question 1: method to minimize the expected loss? hint: name some loss function?
 
