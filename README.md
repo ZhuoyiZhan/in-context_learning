@@ -3,7 +3,7 @@
 ## Overview
 problem addressed: in-context learning on function classes, the ability of transformer models to learn contextual information when processing linear functions
 
-characterizing the approach: Empirical Approache, train transformers from scrach and compare to thr optimal least square estimator, sparse linear functions, two-layer neural networks, and decision trees. 
+Approach: Empirical Approach, train transformers from scratch and compare to the optimal least square estimator, sparse linear functions, two-layer neural networks, and decision trees. 
 
 ## Introduction
 In-context learning refers to the ability of a model to condition on a prompt sequence consisting of in-context examples (input-output pairs corresponding to some task) along with a new query input, and generate the corresponding output (without the need to perform any parameter updates after the model is trained).
@@ -15,38 +15,33 @@ Inputs xi and xquery, f are drawn i.i.d from their distributions over Dx and DF.
 
 We say that a model M can in-context learn the function class F up to ε, with respect
 to (DF , DX ), if it can predict f (xquery) with an average error
-
+![](decoder.png)
 where l(·, ·) is some appropriate loss function, such as the squared error.
 
 ![](setting.jpg)
 
-## Model
-model: decoder-only Transformer architecture from the GPT-2 family
-
-![](decoder.jpg)
-step 1: at each training step, sampling a batch of prompt: 
-**Input: P =(x1,f(x1),x2,f(x2),...,xi,f(xi),xi+1), a sequence of vectors**
-step 2: model Mθ aiming to minimize the expected loss over prompt, updating the model through a gradient update (we use a batch size of 64 and train for 500k total steps)
-**Output: Mθ(xquery), map the vector produced by the model to a scalar.** 
-
 ### Question 1: method to minimize the expected loss? hint: name some loss function?
-
-step 3: compare with baseline: a)the least squares estimator, computing the minimum-norm linear fit to the in-context examples (xi, yi), (b) n-Nearest Neighbors, averaging the yi values for the n nearest neighbors of xquery, (c) averaging the values yixi to estimate w and compute the inner product of this estimate with xquery. 
 
 ### question 2: How to evaluate the ability of the transformer model to generalize to unseen functions? hint: reflect on how we sample our input data.
 
+## Model architecture
+**Model: decoder-only Transformer architecture from the GPT-2 family**
 
-12 layers, 8 attention heads, and a 256-dimensional embedding space (22.4M parameters)
+**Input: P =(x1,f(x1),x2,f(x2),...,xi,f(xi),xi+1)**
 
+**Output: Mθ(xquery), a sequence of vectors then map the vector produced by the model to a scalar** 
 
+**Parameter: θ includes 12 layers and 8 heads**
 
+**for each layer:**
+**-forward pass: prediction of the model at the position corresponding to xi (that is absolute position 2i − 1) as the prediction of f(xi).**
 
+## Training
+- step 1: at each training step, sampling a batch of prompt
+- step 2: model Mθ aiming to minimize the expected loss over prompt, updating the model through a gradient update (we use a batch size of 64 and train for 500k total steps)
+- step 3: compare with baseline: a)the least squares estimator, computing the minimum-norm linear fit to the in-context examples (xi, yi), (b) n-Nearest Neighbors, averaging the yi values for the n nearest neighbors of xquery, (c) averaging the values yixi to estimate w and compute the inner product of this estimate with xquery. 
 
-
-
-
-
-
+## Extrapolating beyond the training distribution
 1. sampling prompt inputs or functions from a different distribution, that is Dtrain ̸= Dtest X/F X/F
 2. introducing a mismatch between in-context examples and the query input, that is Dtest
 
